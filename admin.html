@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>admiralsitca — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --primary:#3b82f6; --bg:#0f172a; --accent:#94a3b8;
+  --glass:rgba(255,255,255,.06); --glass-border:rgba(255,255,255,.12);
+  --text:#e2e8f0; --radius:18px;
+}
+body[data-theme="orange"]{ --primary:#f97316; --bg:#000000; --accent:#334155; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);font-family:'Vazirmatn',sans-serif;min-height:100vh;
+  background-image:radial-gradient(circle at 15% 10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 45%);
+  background-attachment:fixed;
+}
+body.lang-en{font-family:'Inter',sans-serif}
+.container{max-width:860px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 0;flex-wrap:wrap;gap:10px}
+.logo{font-weight:800;font-size:1.4rem;color:var(--primary)}
+.btn{background:var(--glass);border:1px solid var(--glass-border);color:var(--text);padding:9px 16px;border-radius:12px;cursor:pointer;backdrop-filter:blur(12px);font-family:inherit;font-size:.9rem;transition:.25s}
+.btn:hover{border-color:var(--primary);color:var(--primary)}
+.btn-danger{border-color:#ef4444;color:#ef4444}
+.btn-danger:hover{background:#ef4444;color:#fff}
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.4);padding:26px;margin-top:24px}
+.tabs{display:flex;gap:10px;margin-top:24px}
+.tab{flex:1;text-align:center;padding:12px;border-radius:12px;background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;font-weight:600;color:var(--text)}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+input[type=password]{width:100%;background:rgba(0,0,0,.25);border:1px solid var(--glass-border);border-radius:12px;padding:12px;color:var(--text);font-family:inherit;margin:14px 0}
+input:focus{outline:none;border-color:var(--primary)}
+.cards{display:grid;gap:14px;margin-top:20px}
+.card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:18px;display:grid;gap:8px}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-size:.75rem;background:var(--primary);color:#fff;padding:3px 10px;border-radius:99px}
+.time{font-size:.78rem;color:var(--accent)}
+.pre{white-space:pre-wrap;font-size:.92rem;line-height:1.7;color:var(--text)}
+.msg{text-align:center;margin-top:14px;font-size:.9rem}
+.msg.err{color:#ef4444}
+.hidden{display:none}
+</style>
+</head>
+<body data-theme="blue" class="lang-fa">
+<div class="container">
+<header>
+  <div class="logo">admiralsitca · Admin</div>
+  <button class="btn" onclick="logout()">🚪 خروج / Logout</button>
+</header>
+
+<div id="loginBox" class="glass">
+  <h2>🔐 ورود مدیر / Admin Login</h2>
+  <input type="password" id="keyInput" placeholder="ADMIN_KEY" onkeydown="if(event.key==='Enter')login()"/>
+  <button class="btn" onclick="login()" style="width:100%">ورود / Login</button>
+  <div class="msg" id="loginMsg"></div>
+</div>
+
+<div id="panel" class="hidden">
+  <div class="tabs">
+    <div class="tab active" id="tabSupport" onclick="showTab('support')">📨 پشتیبانی / Support</div>
+    <div class="tab" id="tabGames" onclick="showTab('games')">🎮 پیشنهاد بازی / Games</div>
+  </div>
+  <div class="cards" id="cards"></div>
+</div>
+</div>
+<script>
+let KEY = sessionStorage.getItem("adminKey") || "";
+let all = [];
+let currentTab = "support";
+
+function showTab(t){
+  currentTab = t;
+  document.getElementById("tabSupport").classList.toggle("active", t === "support");
+  document.getElementById("tabGames").classList.toggle("active", t === "games");
+  render document}
+
+async function login(){
+  KEY = document.getElementById("keyInput").value.trim();
+  const msg = document.getElementById("loginMsg");
+  try{
+    const r = await fetch("/api/messages?key=" + encodeURIComponent(KEY));
+    if(!r.ok) throw new Error("unauthorized");
+    all = await r.json();
+    sessionStorage.setItem("adminKey", KEY);
+    document.getElementById("loginBox").classList.add("hidden");
+    document.getElementById("panel").classList.remove("hidden");
+    render();
+  }catch(e){
+    msg.className = "msg err";
+    msg.textContent = "رمز اشتباه است / Wrong key";
+  }
+}
+function logout(){ sessionStorage.removeItem("adminKey"); location.reload(); }
+
+async function load(){
+  const r = await fetch("/api/messages?key=" + encodeURIComponent(KEY));
+  if(r.ok) all = await r.json();
+}
+
+function esc(s){ const d = document.createElement("div"); d.textContent = String(s == null ? "" : s); return d.innerHTML; }
+
+function render(){
+  const c = document.getElementById("cards");
+  const items = all
+    .filter(m => currentTab === "support" ? m.type === "support" : m.type === "game_suggestion")
+    .sort((a,b) => b.time - a.time);
+  if(!items.length){
+    c.innerHTML = '<div class="card" style="text-align:center;color:var(--accent)">— خالی / Empty —</div>';
+    return;
+  }
+  c.innerHTML = items.map(function(m){
+    const d = m.data || {};
+    let body = "";
+    if(m.type === "support"){
+      body = '<div class="pre"><b>' + esc(d.name) + '</b> — [' + esc(d.category) + ']\n' + esc(d.message) + '</div>';
+    }else{
+      body = '<div class="pre"><b>' + esc(d.name) + '</b> — ' + esc((d.platforms || []).join(", "))
+        + ' | ⭐ ' + esc(d.rating) + '/10\n' + esc(d.description)
+        + '\nفارسی‌ساز: ' + (d.farsiPatch ? "✅" : "—")
+        + ' | چندنفره: '   + (d.multiplayer ? "✅" : "—")
+        + ' | سیستم ضعیف: ' + (d.lowSpec ? "✅" : "—") + '</div>';
+    }
+    return '<div class="card"><div class="top"><span class="tag">#' + esc(m.id) + '</span>'
+      + '<span class="time">' + new Date(m.time).toLocaleString() + '</span>'
+      + '<button class="btn btn-danger" onclick="del(\'' + esc(m.id) + '\')">🗑 حذف</button></div>'
+      + body + '</div>';
+  }).join("");
+}
+
+async function del(id){
+  if(!confirm("حذف شود؟ / Delete?")) return;
+  await fetch("/api/messages?id=" + encodeURIComponent(id) + "&key=" + encodeURIComponent(KEY), { method:"DELETE" });
+  await load();
+  render();
+}
+
+if(KEY){
+  document.getElementById("keyInput").value = KEY;
+  login();
+}
+</script>
+</body>
+</html>
