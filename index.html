@@ -1,240 +1,57 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>admiralsitca — Support</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
-<style>
-:root{
-  --primary:#3b82f6; --bg:#0f172a; --accent:#94a3b8;
-  --glass:rgba(255,255,255,.06); --glass-border:rgba(255,255,255,.12);
-  --text:#e2e8f0; --radius:18px;
-  --font-fa:'Vazirmatn',sans-serif; --font-en:'Inter',sans-serif;
-}
-body[data-theme="orange"]{ --primary:#f97316; --bg:#000000; --accent:#334155; }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--bg); color:var(--text); font-family:var(--font-fa);
-  min-height:100vh; transition:background .4s,color .4s;
-  background-image:
-    radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 45%),
-    radial-gradient(circle at 85% 80%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 45%);
-  background-attachment:fixed;
-}
-body.lang-en{font-family:var(--font-en)}
-.container{max-width:980px;margin:0 auto;padding:0 20px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;flex-wrap:wrap}
-.logo{font-weight:800;font-size:1.5rem;letter-spacing:1px;color:var(--primary);
-  text-shadow:0 0 18px color-mix(in srgb, var(--primary) 60%, transparent)}
-.controls{display:flex;gap:10px;flex-wrap:wrap}
-.btn{
-  background:var(--glass);border:1px solid var(--glass-border);color:var(--text);
-  padding:9px 16px;border-radius:12px;cursor:pointer;backdrop-filter:blur(12px);
-  font-family:inherit;font-size:.9rem;transition:.25s;text-decoration:none;display:inline-block;
-}
-.btn:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px)}
-.btn-primary{background:var(--primary);border:none;color:#fff;font-weight:600}
-.btn-primary:hover{color:#fff;filter:brightness(1.15)}
-main{padding:30px 0 80px;display:grid;gap:28px}
-.glass{
-  background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  box-shadow:0 8px 32px rgba(0,0,0,.4);padding:28px;
-}
-h2{font-size:1.4rem;margin-bottom:18px;color:var(--primary)}
-.hero{text-align:center;padding:70px 20px}
-.hero h1{font-size:clamp(2.2rem,7vw,4rem);font-weight:800;color:var(--primary);position:relative;display:inline-block}
-.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;overflow:hidden}
-.glitch::before{left:2px;text-shadow:-2px 0 #ff004d;animation:gl1 2.5s infinite linear alternate-reverse;clip-path:inset(0 0 55% 0)}
-.glitch::after{left:-2px;text-shadow:2px 0 #00e5ff;animation:gl2 3s infinite linear alternate-reverse;clip-path:inset(55% 0 0 0)}
-@keyframes gl1{0%{transform:translate(0)}20%{transform:translate(-3px,1px)}40%{transform:translate(3px,-1px)}60%{transform:translate(-2px,-2px)}80%{transform:translate(2px,2px)}100%{transform:translate(0)}}
-@keyframes gl2{0%{transform:translate(0)}25%{transform:translate(3px,1px)}50%{transform:translate(-3px,2px)}75%{transform:translate(2px,-2px)}100%{transform:translate(0)}}
-.hero p{color:var(--accent);margin-top:14px;font-size:1.05rem}
-form{display:grid;gap:16px}
-label{font-size:.9rem;color:var(--accent);display:block;margin-bottom:6px}
-input[type=text],textarea,select{
-  width:100%;background:rgba(0,0,0,.25);border::rgba(0,0,0,.25);border:px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:.95rem;transition:.2s;
-}
-input[type=password]{width:100%;background:rgba(0,0,0,.25);border:1px solid var(--glass-border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:inherit}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);
-  box-shadow:0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent)}
-textarea{min-height:120px;resize:vertical}
-.checks{display:flex;flex-wrap:wrap;gap:14px}
-.checkvar(--text);margin:0;cursor:pointer}
-input[type=checkbox:var(--text);margin:0;cursor:pointer}
-input[type=checkbox]{accent-color:var(--primary);width:18px;height:18px;cursorwidth}
-input[type=range]{width:100%;accent-color:var(--primary)}
-.range-val{font-weight:800;color:var(--primary);font-size:1.2rem}
-.msg{min-height:22px;font-size:.9rem;margin-top:10px}
-.msg.ok{color:#22c55e}.msg.err{color:#ef4444}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.grid2{grid-template-columns:1fr}}
-footer{text-align:center;color:var(--accent);padding:30px 0;font-size:.85rem;border-top:1px solid var(--glass-border)}
-select{cursor:pointer}
-select option{background:#111827;color:#fff}
-</style>
-</head>
-<body data-theme="blue" class="lang-fa">
-<div class="container">
-<header>
-  <div class="logo">admiralsitca</div>
-  <div class="controls">
-    <button class="btn" onclick="toggleTheme()">🎨 <span data-i18n="theme">تم</span></button>
-    <button class="btn" onclick="toggleLang()">🌐 <span data-i18n="lang">English</span></button>
-    <a class="btn" href="admin.html">🔐 <span data-i18n="admin">مدیریت</span></a>
-  </div>
-</header>
-<main>
-  <section class="glass hero">
-    <h1 class="glitch" data-text="admiralsitca">admiralsitca</h1>
-    <p data-i18n="heroSub">پشتیبانی رسمی Admirals — مشکلت رو بگو، پیشنهاد بده، ما هستیم.</p>
-  </section>
-
-  <section class="glass">
-    <h2 data-i18n="supportTitle">📨 فرم پشتیبانی</h2>
-    <form id="supportForm">
-      <div><label data-i18n="fName">نام</label><input type="text" id="sName" required/></div>
-      <div><label data-i18n="fCat">دسته‌بندی</label>
-        <select id="sCat">
-          <option value="bug" data-i18n="catBug">باگ</option>
-          <option value="account" data-i18n="catAcc">حساب کاربری</option>
-          <option value="server" data-i18n="catSrv">سرور</option>
-          <option value="other" data-i18n="catOth">سایر</option>
-        </select></div>
-      <div><label data-i18n="fMsg">پیام (حداقل ۱۰ کاراکتر)</label><textarea id="sText" required minlength="10"></textarea></div>
-      <button class="btn btn-primary" type="submit" data-i18n="send">ارسال</button>
-      <div class="msg" id="sOut"></div>
-    </form>
-  </section>
-
-  <section class="glass">
-    <h2 data-i18n="gameTitle">🎮 پیشنهاد بازی</h2>
-    <form id="gameForm">
-      <div><label data-i18n="gName">نام بازی</label><input type="text" id="gName" required/></div>
-      <div><label data-i18n="gPlat">پلتفرم</label>
-        <div class="checks">
-          <label><input type="checkbox" name="plat" value="PC"/> PC</label>
-          <label><input type="checkbox          <label><input type="checkbox"/> <span data-i18n="platM">موبایل</span></label>
-          <label><input type="checkbox" name="plat" value="Console"/> <span data-i18n="platC">کنسول</span></label>
-        </div></div>
-      <div><label data-i18n="gDesc">توضیحات</label><textarea id="gDesc" required></textarea></div>
-      <div class="checks">
-        <label><input type="checkbox" id="gFarsi"/> <span data-i18n="gFarsi">دارای فارسی‌ساز</span></label>
-        <label><input type="checkbox" id="gMulti"/> <span data-i18n="gMulti">چندنفره (Multiplayer)</span></label>
-        <label><input type="checkbox" id="gLow"/> <span data-i18n="gLow">مناسب سیستم ضعیف</span></label>
-      </div>
-      <div><label><span data-i18n="gRate">امتیاز</span>: <span class="range-val" id="rateVal">5</span>/10</label>
-        <input type="range" id="gRate" min="1" max="10" value="5" oninput="document.getElementById('rateVal').textContent=this.value"/></div>
-      <button class="btn btn-primary" type="submit" data-i18n="send">ارسال</button>
-      <div class="msg" id="gOut"></div>
-    </form>
-  </section>
-</main>
-<footer>© <span id="year"></span> admiralsitca</footer>
+<!-- بخش فرم در index.html -->
+<div class="form-group">
+    <label>نام یا نام کاربری:</label>
+    <input type="text" id="userName" required>
 </div>
+
+<div class="form-group">
+    <label>روش ارتباطی (ایدی روبیکا، تلگرام، ایمیل یا شماره):</label>
+    <input type="text" id="contactInfo" placeholder="مثلاً @user یا 0912..." required>
+</div>
+
+<div class="form-group">
+    <label>دسته‌بندی مشکل:</label>
+    <select id="category">
+        <option value="technical">مشکل فنی</option>
+        <option value="suggestion">پیشنهاد بازی</option>
+        <option value="other">سایر موارد</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>متن پیام:</label>
+    <textarea id="messageText" rows="4" required></textarea>
+</div>
+
+<button onclick="submitSupport()">ارسال درخواست پشتیبانی</button>
+
 <script>
-const TRANSLATIONS = {
-  fa: {
-    theme:"تم", lang:"English", admin:"مدیریت",
-    heroSub:"پشتیبانی رسمی Admirals — مشکلت رو بگو، پیشنهاد بده، ما هستیم.",
-    supportTitle:"📨 فرم پشتیبانی", fName:"نام", fCat:"دسته‌بندی",
-    catBug:"باگ", catAcc:"حساب کاربری", catSrv:"سرور", catOth:"سایر",
-    fMsg:"پیام (حداقل ۱۰ کاراکتر)", send:"ارسال",
-    gameTitle:"🎮 پیشنهاد بازی", gName:"نام بازی", gPlat:"پلتفرم",
-    platM:"موبایل", platC:"کنسول", gDesc:"توضیحات",
-    gFarsi:"دارای فارسی‌ساز", gMulti:"چندنفره (Multiplayer)", gLow:"مناسب سیستم ضعیف",
-    gRate:"امتیاز",
-    sentOk:"✅ با موفقیت ارسال شد!", sentErr:"❌ خطا در ارسال. دوباره تلاش کن.",
-    msgShort:"پیام باید حداقل ۱۰ کاراکتر باشد.", platReq:"حداقل یک پلتفرم انتخاب کن."
-  },
-  en: {
-    theme:"Theme", lang:"فارسی", admin:"Admin",
-    heroSub:"Official Admirals support — report issues, suggest games, we've got you.",
-    supportTitle:"📨 Support Form", fName:"Name", fCat:"Category",
-    catBug:"Bug", catAcc:"Account", catSrv:"Server", catOth:"Other",
-    fMsg:"Message (min 10 chars)", send:"Send",
-    gameTitle:"🎮 Game Suggestion", gName:"Game Name", gPlat:"Platform",
-    platM:"Mobile", platC:"Console", gDesc:"Description",
-    gFarsi:"Has Farsi Patch", gMulti:"Multiplayer", gLow:"Low-spec friendly",
-    gRate:"Rating",
-    sentOk:"✅ Sent successfully!", sentErr:"❌ Failed to send. Try again.",
-    msgShort:"Message must be at least 10 characters.", platReq:"Select at least one platform."
-  }
-};
-let lang  = localStorage.getItem("lang")  || "fa";
-let theme = localStorage.getItem("theme") || "blue";
+function submitSupport() {
+    const data = {
+        id: Date.now(),
+        name: document.getElementById('userName').value,
+        contact: document.getElementById('contactInfo').value,
+        category: document.getElementById('category').value,
+        message: document.getElementById('messageText').value,
+        status: 'pending', // در انتظار
+        reply: '', // پاسخ ادمین
+        date: new Date().toLocaleString('fa-IR')
+    };
 
-function applyAll(){
-  document.body.className = "lang-" + lang;
-  document.body.dataset.theme = theme;
-  document.documentElement.lang = lang;
-  document.documentElement.dir  = lang === "fa" ? "rtl" : "ltr";
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const k = el.dataset.i18n;
-    if (TRANSLATIONS[lang][k]) el.textContent = TRANSLATIONS[lang][k];
-  });
+    if(!data.name || !data.contact || !data.message) {
+        alert("لطفاً تمام فیلدها را پر کنید");
+        return;
+    }
+
+    let messages = JSON.parse(localStorage.getItem('support_messages') || '[]');
+    messages.push(data);
+    localStorage.setItem('support_messages', JSON.stringify(messages));
+    
+    alert("پیام شما با موفقیت ارسال شد. پشتیبانی به زودی با شما در تماس خواهد بود.");
+    // خالی کردن فرم
+    document.getElementById('userName').value = '';
+    document.getElementById('contactInfo').value = '';
+    document.getElementById('messageText').value = '';
 }
-function toggleLang(){ lang  = lang  === "fa" ? "en" : "fa"; localStorage.setItem("lang", lang);   applyAll(); }
-function toggleTheme(){theme = theme === "blue" ? "orange" : "blue"; localStorage.setItem("theme", theme); applyAll(); }
-
-async function post(url, payload){
-  const r = await fetch(url, {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify(payload)
-  });
-  if(!r.ok) throw new Error("HTTP " + r.status);
-  return r.json().catch(()=>({}));
-}
-
-document.getElementById("supportForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const out = document.getElementById("sOut");
-  const name = document.getElementById("sName").value.trim();
-  const category = document.getElementById("sCat").value;
-  const message = document.getElementById("sText").value.trim();
-  if(message.length < 10){
-    out.className = "msg err"; out.textContent = TRANSLATIONS[lang].msgShort; return;
-  }
-  try{
-    await post("/api/submit", { type:"support", data:{ name, category, message } });
-    out.className = "msg ok"; out.textContent = TRANSLATIONS[lang].sentOk;
-    e.target.reset();
-  }catch{
-    out.className = "msg err"; out.textContent = TRANSLATIONS[lang].sentErr;
-  }
-});
-
-document.getElementById("gameForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const out = document.getElementById("gOut");
-  const platforms = [...document.querySelectorAll('input[name="plat"]:checked')].map(c => c.value);
-  if(!platforms.length){
-    out.className = "msg err"; out.textContent = TRANSLATIONS[lang].platReq; return;
-  }
-  const data = {
-    name: document.getElementById("gName").value.trim(),
-    platforms,
-    description: document.getElementById("gDesc").value.trim(),
-    farsiPatch: document.getElementById("gFarsi").checked,
-    multiplayer: document.getElementById("gMulti").checked,
-    lowSpec: document.getElementById("gLow").checked,
-    rating: +document.getElementById("gRate").value
-  };
-  try{
-    await post("/api/submit", { type:"game_suggestion", data });
-    out.className = "msg ok"; out.textContent = TRANSLATIONS[lang].sentOk;
-    e.target.reset();
-    document.getElementById("rateVal").textContent = "5";
-  }catch{
-    out.className = "msg err"; out.textContent = TRANSLATIONS[lang].sentErr;
-  }
-});
-
-document.getElementById("year").textContent = new Date().getFullYear();
-applyAll();
 </script>
-</body>
-</html>
+
